@@ -333,43 +333,65 @@ const LoveMeterStep = ({ onComplete }: { onComplete: () => void }) => {
 
 // --- Step 4: Birthday Typewriter Message ---
 const TypewriterStep = ({ onComplete }: { onComplete: () => void }) => {
-    const text = "Happy Birthday Seng! 🤍";
-    const [displayedText, setDisplayedText] = useState("");
-    const [isDeleting, setIsDeleting] = useState(false);
+    const textTitle = "HAPPY BIRTHDAY SAYANG";
+    const textSub = "may 22 be kind to you.\nand may the next chapter be even better. 🕸️";
+
+    const [displayedTitle, setDisplayedTitle] = useState("");
+    const [displayedSub, setDisplayedSub] = useState("");
+    const [titleDone, setTitleDone] = useState(false);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
-        if (!isDeleting && displayedText !== text) {
+        if (!titleDone && displayedTitle !== textTitle) {
             timer = setTimeout(() => {
-                setDisplayedText(text.slice(0, displayedText.length + 1));
-            }, 120);
-        } else if (!isDeleting && displayedText === text) {
-            timer = setTimeout(() => setIsDeleting(true), 2200);
-        } else if (isDeleting && displayedText !== "") {
-            timer = setTimeout(() => {
-                setDisplayedText(text.slice(0, displayedText.length - 1));
-            }, 60);
-        } else if (isDeleting && displayedText === "") {
-            onComplete();
+                setDisplayedTitle(textTitle.slice(0, displayedTitle.length + 1));
+            }, 100);
+        } else if (!titleDone && displayedTitle === textTitle) {
+            timer = setTimeout(() => setTitleDone(true), 500);
         }
         return () => clearTimeout(timer);
-    }, [displayedText, isDeleting, onComplete, text]);
+    }, [displayedTitle, titleDone, textTitle]);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (titleDone && displayedSub !== textSub) {
+            timer = setTimeout(() => {
+                setDisplayedSub(textSub.slice(0, displayedSub.length + 1));
+            }, 60);
+        } else if (titleDone && displayedSub === textSub) {
+            timer = setTimeout(() => onComplete(), 3000);
+        }
+        return () => clearTimeout(timer);
+    }, [displayedSub, titleDone, onComplete, textSub]);
 
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, filter: 'blur(20px)' }}
-            className="flex items-center justify-center p-8 relative z-10"
+            className="flex flex-col items-center justify-center p-8 relative z-10 text-center space-y-4 max-w-xl"
         >
-            <h1 className="text-4xl sm:text-7xl font-serif text-red-100 text-center leading-tight">
-                {displayedText}
-                <motion.span
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.8 }}
-                    className="inline-block w-2 sm:w-3 h-10 sm:h-16 bg-red-500 ml-2 align-middle"
-                />
+            <h1 className="text-4xl sm:text-6xl font-serif font-bold text-red-200 leading-tight tracking-wide drop-shadow-[0_0_15px_rgba(225,29,72,0.6)]">
+                {displayedTitle}
+                {!titleDone && (
+                    <motion.span
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.8 }}
+                        className="inline-block w-2 sm:w-3 h-8 sm:h-12 bg-red-500 ml-2 align-middle"
+                    />
+                )}
             </h1>
+
+            {titleDone && (
+                <p className="text-base sm:text-xl font-serif text-rose-200/90 whitespace-pre-line leading-relaxed italic">
+                    {displayedSub}
+                    <motion.span
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.8 }}
+                        className="inline-block w-1.5 h-5 bg-red-400 ml-1 align-middle"
+                    />
+                </p>
+            )}
         </motion.div>
     );
 };

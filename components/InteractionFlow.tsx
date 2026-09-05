@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X, Circle } from 'lucide-react';
+import { Heart, X, Circle, Gift, Sparkles } from 'lucide-react';
 
 // --- Background Particles ---
 const BackgroundHearts = () => {
@@ -13,13 +13,13 @@ const BackgroundHearts = () => {
 
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(10)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
                 <motion.div
                     key={i}
                     initial={{
                         opacity: 0,
                         y: '110vh',
-                        x: `${(i * 10) + Math.random() * 5}%`,
+                        x: `${(i * 12) + Math.random() * 5}%`,
                         scale: 0.5
                     }}
                     animate={{
@@ -29,14 +29,14 @@ const BackgroundHearts = () => {
                         scale: [0.5, 0.8, 0.5]
                     }}
                     transition={{
-                        duration: 15 + Math.random() * 10,
+                        duration: 12 + Math.random() * 8,
                         repeat: Infinity,
-                        delay: i * 2,
+                        delay: i * 1.5,
                         ease: "linear"
                     }}
                     className="absolute text-red-500/15"
                 >
-                    <Heart size={30} fill="currentColor" />
+                    <Heart size={28} fill="currentColor" />
                 </motion.div>
             ))}
         </div>
@@ -49,7 +49,7 @@ const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
 
     useEffect(() => {
         if (isOn) {
-            const timer = setTimeout(() => onComplete(), 2500);
+            const timer = setTimeout(() => onComplete(), 2000);
             return () => clearTimeout(timer);
         }
     }, [isOn, onComplete]);
@@ -58,7 +58,8 @@ const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
         <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
+            exit={{ opacity: 0, scale: 1.05, filter: 'blur(8px)' }}
+            transition={{ duration: 0.6 }}
             className="flex flex-col items-center justify-center relative z-10"
         >
             <div className={`backdrop-blur-2xl p-10 rounded-[3rem] transition-all duration-1000 ease-in-out flex flex-col items-center space-y-8 border border-white/10 ${isOn ? 'bg-red-950/20 shadow-[0_0_80px_rgba(225,29,72,0.3)] border-red-500/30' : 'bg-white/5 shadow-2xl'}`}>
@@ -123,7 +124,143 @@ const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
     );
 };
 
-// --- Step 2: Tic-Tac-Toe Game ---
+// --- Step 2: PIN Lock Screen (060904) ---
+const PinStep = ({ onComplete }: { onComplete: () => void }) => {
+    const [pin, setPin] = useState('');
+    const [error, setError] = useState(false);
+    const TARGET_PIN = '060904';
+
+    const handlePress = (num: string) => {
+        if (pin.length < 6) {
+            const nextPin = pin + num;
+            setPin(nextPin);
+            if (nextPin.length === 6) {
+                if (nextPin === TARGET_PIN) {
+                    setTimeout(() => onComplete(), 300);
+                } else {
+                    setError(true);
+                    setTimeout(() => {
+                        setPin('');
+                        setError(false);
+                    }, 800);
+                }
+            }
+        }
+    };
+
+    const handleDelete = () => setPin(prev => prev.slice(0, -1));
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05, filter: 'blur(8px)' }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center justify-center relative z-10 text-center"
+        >
+            <div className="text-3xl mb-2">🕸️🌸</div>
+            <h2 className="text-2xl font-serif text-red-100 mb-1">For You, My Love</h2>
+            <p className="text-xs text-red-400 mb-6">Enter our secret code</p>
+
+            <div className={`flex gap-3 mb-8 ${error ? 'animate-bounce' : ''}`}>
+                {[...Array(6)].map((_, i) => (
+                    <div
+                        key={i}
+                        className={`w-3.5 h-3.5 rounded-full border border-red-500 transition-all duration-200 ${
+                            i < pin.length ? 'bg-red-600 shadow-[0_0_10px_#e11d48]' : 'bg-transparent'
+                        }`}
+                    />
+                ))}
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 w-full max-w-[240px]">
+                {['1','2','3','4','5','6','7','8','9'].map((num) => (
+                    <button
+                        key={num}
+                        onClick={() => handlePress(num)}
+                        className="w-14 h-14 rounded-full bg-red-950/40 border border-red-500/30 text-xl text-red-100 flex items-center justify-center mx-auto active:bg-red-600 transition-all cursor-pointer"
+                    >
+                        {num}
+                    </button>
+                ))}
+                <button onClick={() => setPin('')} className="w-14 h-14 text-xs text-red-400 flex items-center justify-center mx-auto cursor-pointer">✕</button>
+                <button onClick={() => handlePress('0')} className="w-14 h-14 rounded-full bg-red-950/40 border border-red-500/30 text-xl text-red-100 flex items-center justify-center mx-auto active:bg-red-600 transition-all cursor-pointer">0</button>
+                <button onClick={handleDelete} className="w-14 h-14 text-lg text-red-200 flex items-center justify-center mx-auto cursor-pointer">⌫</button>
+            </div>
+        </motion.div>
+    );
+};
+
+// --- Step 3: Premium Animated Gift Box ---
+const PremiumGiftStep = ({ onComplete }: { onComplete: () => void }) => {
+    const [opened, setOpened] = useState(false);
+
+    const handleClick = () => {
+        setOpened(true);
+        setTimeout(() => onComplete(), 1200);
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1, filter: 'blur(8px)' }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center justify-center relative z-10 text-center"
+        >
+            {!opened ? (
+                <div className="flex flex-col items-center space-y-6 cursor-pointer" onClick={handleClick}>
+                    <p className="text-sm font-serif text-red-200 tracking-wide">
+                        Touch the gift box to open it ✨
+                    </p>
+                    
+                    {/* Premium Gift Box Visual */}
+                    <div className="relative group">
+                        <div className="absolute -inset-4 bg-gradient-to-r from-red-600 to-rose-500 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity animate-pulse" />
+                        <motion.div
+                            animate={{ y: [0, -10, 0], rotate: [0, -2, 2, 0] }}
+                            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                            className="relative w-36 h-36 bg-gradient-to-br from-red-900 to-rose-950 border-2 border-red-400/60 rounded-3xl p-6 shadow-2xl flex items-center justify-center backdrop-blur-md"
+                        >
+                            <Gift className="w-20 h-20 text-rose-300 drop-shadow-[0_0_15px_rgba(244,63,94,0.8)]" />
+                            <Sparkles className="absolute top-2 right-2 w-6 h-6 text-amber-300 animate-spin" />
+                        </motion.div>
+                    </div>
+                </div>
+            ) : (
+                <div className="relative flex flex-col items-center justify-center">
+                    {/* Confetti Explosion Effects */}
+                    {[...Array(14)].map((_, i) => (
+                        <motion.span
+                            key={i}
+                            initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
+                            animate={{
+                                scale: [0.5, 1.4],
+                                x: (Math.random() - 0.5) * 280,
+                                y: (Math.random() - 0.5) * 280,
+                                opacity: [1, 0]
+                            }}
+                            transition={{ duration: 0.9, ease: "easeOut" }}
+                            className="absolute text-3xl pointer-events-none"
+                        >
+                            {['✨', '🌸', '💖', '🎉', '🎁', '🕷️'][i % 6]}
+                        </motion.span>
+                    ))}
+                    <motion.div
+                        initial={{ scale: 0.3, opacity: 0 }}
+                        animate={{ scale: [0.3, 1.3, 1], opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-4xl font-serif font-bold text-red-200 drop-shadow-[0_0_20px_rgba(225,29,72,0.8)]"
+                    >
+                        Surprise! 🎁✨
+                    </motion.div>
+                </div>
+            )}
+        </motion.div>
+    );
+};
+
+// --- Step 4: Tic-Tac-Toe Game ---
 const TicTacToeStep = ({ onComplete }: { onComplete: () => void }) => {
     const [board, setBoard] = useState(Array(9).fill(null));
     const [isUserTurn, setIsUserTurn] = useState(true);
@@ -177,29 +314,30 @@ const TicTacToeStep = ({ onComplete }: { onComplete: () => void }) => {
             setWinner(result);
         } else {
             setIsUserTurn(false);
-            setTimeout(() => makeAIMove(newBoard), 500);
+            setTimeout(() => makeAIMove(newBoard), 400);
         }
     };
 
     useEffect(() => {
         if (winner === 'X') {
             setMessage("you got it!");
-            setTimeout(() => onComplete(), 3200);
+            setTimeout(() => onComplete(), 2000);
         } else if (winner === 'O' || winner === 'draw') {
             setMessage(winner === 'draw' ? "Seri! Coba lagi yaa ❤️" : "Hampir! Sekali lagi...");
             setTimeout(() => {
                 setBoard(Array(9).fill(null));
                 setWinner(null);
                 setIsUserTurn(true);
-            }, 1200);
+            }, 1000);
         }
     }, [winner, onComplete]);
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            exit={{ opacity: 0, scale: 0.9, filter: 'blur(8px)' }}
+            transition={{ duration: 0.6 }}
             className="flex flex-col items-center justify-center space-y-8 relative z-10"
         >
             <h2 className="text-3xl font-serif text-red-100 text-center drop-shadow-lg max-w-xs whitespace-pre-line leading-tight">
@@ -210,7 +348,7 @@ const TicTacToeStep = ({ onComplete }: { onComplete: () => void }) => {
                     <button
                         key={i}
                         onClick={() => handleSquareClick(i)}
-                        className="w-20 h-20 sm:w-24 sm:h-24 bg-white/5 rounded-2xl flex items-center justify-center border border-red-500/10 hover:bg-white/10 transition-all duration-300 group"
+                        className="w-20 h-20 sm:w-24 sm:h-24 bg-white/5 rounded-2xl flex items-center justify-center border border-red-500/10 hover:bg-white/10 transition-all duration-300 group cursor-pointer"
                     >
                         <AnimatePresence mode="wait">
                             {square === 'X' ? (
@@ -218,7 +356,7 @@ const TicTacToeStep = ({ onComplete }: { onComplete: () => void }) => {
                                     key={winner === 'X' ? "heart" : "x"}
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    transition={winner === 'X' ? { delay: i * 0.1, type: 'spring' } : {}}
+                                    transition={winner === 'X' ? { delay: i * 0.08, type: 'spring' } : {}}
                                 >
                                     {winner === 'X' ?
                                         <Heart className="w-12 h-12 text-red-500 fill-red-500 filter drop-shadow-[0_0_10px_rgba(225,29,72,0.8)]" /> :
@@ -250,7 +388,7 @@ const TicTacToeStep = ({ onComplete }: { onComplete: () => void }) => {
     );
 };
 
-// --- Step 3: Birthday Love Gauge ---
+// --- Step 5: Birthday Love Gauge ---
 const LoveMeterStep = ({ onComplete }: { onComplete: () => void }) => {
     const [progress, setProgress] = useState(0);
 
@@ -259,12 +397,12 @@ const LoveMeterStep = ({ onComplete }: { onComplete: () => void }) => {
             setProgress(prev => {
                 if (prev >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => onComplete(), 1200);
+                    setTimeout(() => onComplete(), 1000);
                     return 100;
                 }
-                return prev + 1;
+                return prev + 2;
             });
-        }, 35);
+        }, 30);
         return () => clearInterval(interval);
     }, [onComplete]);
 
@@ -276,7 +414,8 @@ const LoveMeterStep = ({ onComplete }: { onComplete: () => void }) => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(8px)' }}
+            transition={{ duration: 0.6 }}
             className="flex flex-col items-center justify-center space-y-10 w-full max-w-lg px-6 relative z-10"
         >
             <div className="relative w-full aspect-[2/1] flex flex-col items-center justify-end overflow-hidden">
@@ -301,127 +440,3 @@ const LoveMeterStep = ({ onComplete }: { onComplete: () => void }) => {
                     />
                     <defs>
                         <linearGradient id="loveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#9f1239" />
-                            <stop offset="100%" stopColor="#f43f5e" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-
-                <div className="z-10 flex flex-col items-center pb-4">
-                    <motion.div
-                        animate={{ scale: [1, 1.15, 1] }}
-                        transition={{ repeat: Infinity, duration: 1.5 }}
-                    >
-                        <Heart className="w-14 h-14 text-red-500 fill-red-500 mb-2" />
-                    </motion.div>
-                    <div className="text-6xl font-black text-red-100 font-mono tracking-tighter">
-                        {progress}<span className="text-red-400 text-3xl">%</span>
-                    </div>
-                    <span className="text-xl text-red-200/80 font-serif italic mt-1 tracking-widest">Love & Wishes</span>
-                </div>
-            </div>
-
-            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden border border-red-500/20">
-                <motion.div
-                    className="h-full bg-gradient-to-r from-red-800 to-rose-500"
-                    animate={{ width: `${progress}%` }}
-                />
-            </div>
-        </motion.div>
-    );
-};
-
-// --- Step 4: Birthday Typewriter Message ---
-const TypewriterStep = ({ onComplete }: { onComplete: () => void }) => {
-    const textTitle = "HAPPY BIRTHDAY SAYANG";
-    const textSub = "may 22 be kind to you.\nand may the next chapter be even better. 🕸️";
-
-    const [displayedTitle, setDisplayedTitle] = useState("");
-    const [displayedSub, setDisplayedSub] = useState("");
-    const [titleDone, setTitleDone] = useState(false);
-
-    useEffect(() => {
-        let timer: NodeJS.Timeout;
-        if (!titleDone && displayedTitle !== textTitle) {
-            timer = setTimeout(() => {
-                setDisplayedTitle(textTitle.slice(0, displayedTitle.length + 1));
-            }, 100);
-        } else if (!titleDone && displayedTitle === textTitle) {
-            timer = setTimeout(() => setTitleDone(true), 500);
-        }
-        return () => clearTimeout(timer);
-    }, [displayedTitle, titleDone, textTitle]);
-
-    useEffect(() => {
-        let timer: NodeJS.Timeout;
-        if (titleDone && displayedSub !== textSub) {
-            timer = setTimeout(() => {
-                setDisplayedSub(textSub.slice(0, displayedSub.length + 1));
-            }, 60);
-        } else if (titleDone && displayedSub === textSub) {
-            timer = setTimeout(() => onComplete(), 3000);
-        }
-        return () => clearTimeout(timer);
-    }, [displayedSub, titleDone, onComplete, textSub]);
-
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, filter: 'blur(20px)' }}
-            className="flex flex-col items-center justify-center p-8 relative z-10 text-center space-y-4 max-w-xl"
-        >
-            <h1 className="text-4xl sm:text-6xl font-serif font-bold text-red-200 leading-tight tracking-wide drop-shadow-[0_0_15px_rgba(225,29,72,0.6)]">
-                {displayedTitle}
-                {!titleDone && (
-                    <motion.span
-                        animate={{ opacity: [0, 1, 0] }}
-                        transition={{ repeat: Infinity, duration: 0.8 }}
-                        className="inline-block w-2 sm:w-3 h-8 sm:h-12 bg-red-500 ml-2 align-middle"
-                    />
-                )}
-            </h1>
-
-            {titleDone && (
-                <p className="text-base sm:text-xl font-serif text-rose-200/90 whitespace-pre-line leading-relaxed italic">
-                    {displayedSub}
-                    <motion.span
-                        animate={{ opacity: [0, 1, 0] }}
-                        transition={{ repeat: Infinity, duration: 0.8 }}
-                        className="inline-block w-1.5 h-5 bg-red-400 ml-1 align-middle"
-                    />
-                </p>
-            )}
-        </motion.div>
-    );
-};
-
-export default function InteractionFlow({ onFlowComplete }: { onFlowComplete: () => void }) {
-    const [step, setStep] = useState(1);
-
-    return (
-        <div className="fixed inset-0 z-50 bg-[#0a040d] flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.18)_0%,transparent_75%)]" />
-
-            <BackgroundHearts />
-
-            <AnimatePresence mode="wait">
-                {step === 1 && (
-                    <LoveModeStep key="step1" onComplete={() => setStep(2)} />
-                )}
-                {step === 2 && (
-                    <TicTacToeStep key="step2" onComplete={() => setStep(3)} />
-                )}
-                {step === 3 && (
-                    <LoveMeterStep key="step3" onComplete={() => setStep(4)} />
-                )}
-                {step === 4 && (
-                    <TypewriterStep key="step4" onComplete={() => onFlowComplete()} />
-                )}
-            </AnimatePresence>
-
-            <div className="absolute -top-24 -left-24 w-96 h-96 bg-red-950/30 blur-[120px] rounded-full" />
-            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-rose-950/30 blur-[120px] rounded-full" />
-        </div>
-    );
-}

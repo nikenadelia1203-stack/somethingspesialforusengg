@@ -29,38 +29,27 @@ export default function DomeGallery() {
 
   return (
     <section className="relative w-full overflow-hidden py-6">
-      {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute left-[10%] top-[10%] text-4xl animate-pulse">
-          ✦
-        </div>
-        <div className="absolute right-[8%] top-[35%] text-3xl animate-pulse">
-          🕸️
-        </div>
-        <div className="absolute bottom-[20%] left-[5%] text-3xl animate-pulse">
-          ✧
-        </div>
+        <div className="absolute left-[10%] top-[10%] text-4xl animate-pulse">✦</div>
+        <div className="absolute right-[8%] top-[35%] text-3xl animate-pulse">🕸️</div>
+        <div className="absolute bottom-[20%] left-[5%] text-3xl animate-pulse">✧</div>
       </div>
 
       <div className="relative mx-auto w-full max-w-md px-2">
-        {/* Heading */}
         <div className="mb-8 text-center">
           <p className="mb-2 font-mono text-[10px] tracking-[0.24em] text-rose-200/60">
             08 / THREE MOMENTS
           </p>
-
           <h2 className="font-serif text-[clamp(32px,8vw,48px)] leading-[0.95] text-[#f6ece6]">
             Some games.
             <br />
             <em className="font-normal">Some memories.</em>
           </h2>
-
           <p className="mx-auto mt-3 max-w-xs text-xs leading-5 text-rose-100/45">
             Nothing fancy. Just three little moments worth keeping.
           </p>
         </div>
 
-        {/* Photo cards */}
         <div className="flex flex-col gap-8">
           {moments.map((moment, index) => (
             <motion.button
@@ -71,24 +60,15 @@ export default function DomeGallery() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileTap={{ scale: 0.98 }}
-              className={`
-                group relative w-full cursor-pointer bg-[#e9ded3] p-2 text-left text-[#352b2c] shadow-[0_20px_45px_rgba(0,0,0,.45)] transition
-                ${
-                  index === 0
-                    ? '-rotate-[1deg]'
-                    : index === 1
-                    ? 'rotate-[1deg]'
-                    : '-rotate-[0.5deg]'
-                }
-              `}
+              className={`group relative w-full cursor-pointer bg-[#e9ded3] p-2 text-left text-[#352b2c] shadow-[0_20px_45px_rgba(0,0,0,.45)] transition ${
+                index === 0 ? '-rotate-[1deg]' : index === 1 ? 'rotate-[1deg]' : '-rotate-[0.5deg]'
+              }`}
             >
-              {/* Top label */}
               <div className="flex h-8 items-center justify-between px-2 font-mono text-[9px] tracking-[0.14em]">
                 <span>{moment.number}</span>
                 <span className="text-[#7b2c38]">✦</span>
               </div>
 
-              {/* Image */}
               <div className="relative aspect-square overflow-hidden bg-[#21191a]">
                 <img
                   src={moment.image}
@@ -101,7 +81,6 @@ export default function DomeGallery() {
                 </div>
               </div>
 
-              {/* Caption */}
               <div className="p-3 pb-4">
                 <p className="font-mono text-[10px] tracking-[0.1em] text-[#7b2c38]">
                   {moment.title}
@@ -115,7 +94,6 @@ export default function DomeGallery() {
         </div>
       </div>
 
-      {/* IMAGE MODAL */}
       <AnimatePresence>
         {activeImage !== null && (
           <motion.div

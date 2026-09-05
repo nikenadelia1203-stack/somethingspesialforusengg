@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import DomeGallery from '@/components/DomeGallery';
 
 type Step =
   | 'loading'
@@ -127,6 +128,7 @@ function MainButton({
         transition
         hover:bg-white/[0.09]
         active:scale-95
+        cursor-pointer
       "
     >
       {children}
@@ -447,6 +449,7 @@ function PinScreen({ next }: { next: () => void }) {
                   transition
                   active:scale-95
                   active:bg-rose-500/20
+                  cursor-pointer
                 "
               >
                 {number}
@@ -562,6 +565,7 @@ function PuzzleScreen({ next }: { next: () => void }) {
                 border
                 text-xl
                 transition
+                cursor-pointer
                 ${
                   solved[index]
                     ? 'border-rose-300/40 bg-rose-700/30'
@@ -679,6 +683,7 @@ function PlaylistScreen({ next }: { next: () => void }) {
                 p-4
                 text-left
                 transition
+                cursor-pointer
                 ${
                   trackIndex === index
                     ? 'border-rose-300/40 bg-rose-900/20'
@@ -740,6 +745,7 @@ function PlaylistScreen({ next }: { next: () => void }) {
               border-rose-200/20
               bg-rose-700/70
               text-sm
+              cursor-pointer
             "
           >
             {playing ? '❚❚' : '▶'}
@@ -792,34 +798,19 @@ function PlaylistScreen({ next }: { next: () => void }) {
 }
 
 /* =========================================================
-   07 — SPIDER-MAN BOUQUET
+   07 — STORY SCREEN (BAGIAN REVISI)
 ========================================================= */
 
-function BouquetSection() {
-  const [clicked, setClicked] = useState(0);
-  const [message, setMessage] = useState(
-    'tap the bouquet for a little surprise.'
-  );
-
-  const messages = [
-    'one more random game together.',
-    'more laughs, less overthinking.',
-    'make memories worth keeping.',
-    'go somewhere you have never been.',
-    'another good day waiting somewhere.',
-  ];
-
-  function handleBouquetClick() {
-    setClicked((value) => value + 1);
-
-    setMessage(
-      messages[Math.floor(Math.random() * messages.length)]
-    );
-  }
-
+function StoryScreen({ next }: { next: () => void }) {
   return (
-    <section className="py-12 text-center">
-      <SectionLabel>06 / THINGS TO DO</SectionLabel>
+    <div className="h-full overflow-y-auto overscroll-contain px-4 pb-16 pt-10">
+      <div className="mx-auto max-w-xl">
+        <div className="py-7 text-center font-mono text-[10px] tracking-[0.24em] text-rose-100/30">
+          ✦ A FEW MOMENTS WORTH KEEPING
+        </div>
 
-      <BigTitle>
-        A tiny
+        <DomeGallery />
+
+        <div className="flex justify-center pt-8">
+          <MainButton onClick={next}>
+            one last thing &

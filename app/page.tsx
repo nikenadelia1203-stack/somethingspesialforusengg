@@ -1,36 +1,30 @@
 'use client';
 
-import { useState } from 'react';
-import DomeGallery from '@/components/DomeGallery';
+import React, { useState, useRef } from 'react';
 import InteractionFlow from '@/components/InteractionFlow';
+import DomeGallery from '@/components/DomeGallery';
 
 export default function Home() {
   const [showGallery, setShowGallery] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const userImages = [
-    '/1.jpeg',
-    '/2.jpeg',
-    '/3.jpeg',
-  ];
+  const handleFlowComplete = () => {
+    setShowGallery(true);
+    // Putar lagu music1.mp3 secara otomatis setelah interaksi selesai
+    if (audioRef.current) {
+      audioRef.current.play().catch((err) => console.log('Audio autoplay blocked:', err));
+    }
+  };
 
   return (
-    <main className="w-screen h-screen bg-[#060010]">
+    <main className="relative min-h-screen bg-[#0a040d] text-white">
+      {/* Audio Pemutar Musik */}
+      <audio ref={audioRef} src="/music1.mp3" loop preload="auto" />
+
       {!showGallery ? (
-        <InteractionFlow onFlowComplete={() => setShowGallery(true)} />
+        <InteractionFlow onFlowComplete={handleFlowComplete} />
       ) : (
-        <>
-          <audio src="/music1.mp3" autoPlay loop className="hidden" />
-          <DomeGallery
-            images={userImages}
-            fit={0.8}
-            minRadius={600}
-            maxVerticalRotationDeg={0}
-            segments={34}
-            dragDampening={2}
-            grayscale={false}
-            autoRotationSpeed={0.1}
-          />
-        </>
+        <DomeGallery />
       )}
     </main>
   );

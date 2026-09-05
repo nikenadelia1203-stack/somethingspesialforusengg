@@ -2,46 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X, Circle, Gift, Sparkles } from 'lucide-react';
-
-// --- Background Particles ---
-const BackgroundHearts = () => {
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
-
-    if (!mounted) return null;
-
-    return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(8)].map((_, i) => (
-                <motion.div
-                    key={i}
-                    initial={{
-                        opacity: 0,
-                        y: '110vh',
-                        x: `${(i * 12) + Math.random() * 5}%`,
-                        scale: 0.5
-                    }}
-                    animate={{
-                        opacity: [0, 0.25, 0],
-                        y: '-10vh',
-                        rotate: [0, 180],
-                        scale: [0.5, 0.8, 0.5]
-                    }}
-                    transition={{
-                        duration: 12 + Math.random() * 8,
-                        repeat: Infinity,
-                        delay: i * 1.5,
-                        ease: "linear"
-                    }}
-                    className="absolute text-red-500/15"
-                >
-                    <Heart size={28} fill="currentColor" />
-                </motion.div>
-            ))}
-        </div>
-    );
-};
 
 // --- Step 1: Birthday Love Mode ---
 const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
@@ -63,16 +23,8 @@ const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
             className="flex flex-col items-center justify-center relative z-10"
         >
             <div className={`backdrop-blur-2xl p-10 rounded-[3rem] transition-all duration-1000 ease-in-out flex flex-col items-center space-y-8 border border-white/10 ${isOn ? 'bg-red-950/20 shadow-[0_0_80px_rgba(225,29,72,0.3)] border-red-500/30' : 'bg-white/5 shadow-2xl'}`}>
-                <div className="relative">
-                    <motion.div
-                        animate={isOn ? {
-                            scale: [1, 1.15, 1],
-                            filter: ['drop-shadow(0 0 0px rgba(225,29,72,0))', 'drop-shadow(0 0 20px rgba(225,29,72,0.8))', 'drop-shadow(0 0 0px rgba(225,29,72,0))']
-                        } : {}}
-                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                    >
-                        <Heart className={`w-20 h-20 transition-all duration-1000 ${isOn ? 'text-red-500 fill-red-500' : 'text-white/20'}`} />
-                    </motion.div>
+                <div className="text-6xl mb-2">
+                    {isOn ? '❤️' : '🤍'}
                 </div>
 
                 <div className="flex flex-col items-center space-y-6">
@@ -82,41 +34,15 @@ const LoveModeStep = ({ onComplete }: { onComplete: () => void }) => {
 
                     <button
                         onClick={() => setIsOn(!isOn)}
-                        className={`group relative w-32 h-16 rounded-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] p-1.5 focus:outline-none cursor-pointer ${isOn ? 'bg-red-700 shadow-[0_0_30px_rgba(225,29,72,0.6)]' : 'bg-white/10'}`}
+                        className={`group relative w-32 h-16 rounded-full transition-all duration-700 p-1.5 focus:outline-none cursor-pointer ${isOn ? 'bg-red-700 shadow-[0_0_30px_rgba(225,29,72,0.6)]' : 'bg-white/10'}`}
                     >
                         <motion.div
                             animate={{ x: isOn ? 64 : 0 }}
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                            className="w-13 h-13 bg-white rounded-full shadow-[0_4px_10px_rgba(0,0,0,0.2)] flex items-center justify-center pointer-events-none"
+                            className="w-13 h-13 bg-white rounded-full shadow-[0_4px_10px_rgba(0,0,0,0.2)] flex items-center justify-center pointer-events-none text-xl"
                         >
-                            <Heart
-                                size={24}
-                                className={`transition-colors duration-500 ${isOn ? "text-red-600 fill-red-600" : "text-gray-400"}`}
-                            />
+                            {isOn ? '❤️' : '🖤'}
                         </motion.div>
-
-                        <AnimatePresence>
-                            {!isOn && (
-                                <motion.span
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/30"
-                                >
-                                    off
-                                </motion.span>
-                            )}
-                            {isOn && (
-                                <motion.span
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="absolute left-6 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/90"
-                                >
-                                    on
-                                </motion.span>
-                            )}
-                        </AnimatePresence>
                     </button>
                 </div>
             </div>
@@ -191,8 +117,8 @@ const PinStep = ({ onComplete }: { onComplete: () => void }) => {
     );
 };
 
-// --- Step 3: Premium Animated Gift Box ---
-const PremiumGiftStep = ({ onComplete }: { onComplete: () => void }) => {
+// --- Step 3: Premium Gift Animation ---
+const GiftStep = ({ onComplete }: { onComplete: () => void }) => {
     const [opened, setOpened] = useState(false);
 
     const handleClick = () => {
@@ -213,34 +139,27 @@ const PremiumGiftStep = ({ onComplete }: { onComplete: () => void }) => {
                     <p className="text-sm font-serif text-red-200 tracking-wide">
                         Touch the gift box to open it ✨
                     </p>
-                    
-                    {/* Premium Gift Box Visual */}
-                    <div className="relative group">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-red-600 to-rose-500 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity animate-pulse" />
-                        <motion.div
-                            animate={{ y: [0, -10, 0], rotate: [0, -2, 2, 0] }}
-                            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-                            className="relative w-36 h-36 bg-gradient-to-br from-red-900 to-rose-950 border-2 border-red-400/60 rounded-3xl p-6 shadow-2xl flex items-center justify-center backdrop-blur-md"
-                        >
-                            <Gift className="w-20 h-20 text-rose-300 drop-shadow-[0_0_15px_rgba(244,63,94,0.8)]" />
-                            <Sparkles className="absolute top-2 right-2 w-6 h-6 text-amber-300 animate-spin" />
-                        </motion.div>
-                    </div>
+                    <motion.div
+                        animate={{ y: [0, -10, 0], scale: [1, 1.05, 1] }}
+                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                        className="text-8xl drop-shadow-[0_0_20px_rgba(225,29,72,0.6)]"
+                    >
+                        🎁
+                    </motion.div>
                 </div>
             ) : (
                 <div className="relative flex flex-col items-center justify-center">
-                    {/* Confetti Explosion Effects */}
-                    {[...Array(14)].map((_, i) => (
+                    {[...Array(12)].map((_, i) => (
                         <motion.span
                             key={i}
                             initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
                             animate={{
                                 scale: [0.5, 1.4],
-                                x: (Math.random() - 0.5) * 280,
-                                y: (Math.random() - 0.5) * 280,
+                                x: (Math.random() - 0.5) * 260,
+                                y: (Math.random() - 0.5) * 260,
                                 opacity: [1, 0]
                             }}
-                            transition={{ duration: 0.9, ease: "easeOut" }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
                             className="absolute text-3xl pointer-events-none"
                         >
                             {['✨', '🌸', '💖', '🎉', '🎁', '🕷️'][i % 6]}
@@ -348,7 +267,7 @@ const TicTacToeStep = ({ onComplete }: { onComplete: () => void }) => {
                     <button
                         key={i}
                         onClick={() => handleSquareClick(i)}
-                        className="w-20 h-20 sm:w-24 sm:h-24 bg-white/5 rounded-2xl flex items-center justify-center border border-red-500/10 hover:bg-white/10 transition-all duration-300 group cursor-pointer"
+                        className="w-20 h-20 sm:w-24 sm:h-24 bg-white/5 rounded-2xl flex items-center justify-center border border-red-500/10 hover:bg-white/10 transition-all duration-300 group cursor-pointer text-3xl"
                     >
                         <AnimatePresence mode="wait">
                             {square === 'X' ? (
@@ -356,16 +275,12 @@ const TicTacToeStep = ({ onComplete }: { onComplete: () => void }) => {
                                     key={winner === 'X' ? "heart" : "x"}
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    transition={winner === 'X' ? { delay: i * 0.08, type: 'spring' } : {}}
                                 >
-                                    {winner === 'X' ?
-                                        <Heart className="w-12 h-12 text-red-500 fill-red-500 filter drop-shadow-[0_0_10px_rgba(225,29,72,0.8)]" /> :
-                                        <X className="w-12 h-12 text-red-200/80" />
-                                    }
+                                    {winner === 'X' ? '❤️' : '❌'}
                                 </motion.div>
                             ) : square === 'O' ? (
                                 <motion.div key="o" initial={{ scale: 0 }} animate={{ scale: 1 }}>
-                                    <Circle className="w-12 h-12 text-rose-300 opacity-40" />
+                                    ⭕
                                 </motion.div>
                             ) : null}
                         </AnimatePresence>
@@ -440,3 +355,107 @@ const LoveMeterStep = ({ onComplete }: { onComplete: () => void }) => {
                     />
                     <defs>
                         <linearGradient id="loveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#9f1239" />
+                            <stop offset="100%" stopColor="#f43f5e" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <div className="z-10 flex flex-col items-center pb-4">
+                    <div className="text-4xl mb-2 animate-bounce">❤️</div>
+                    <div className="text-6xl font-black text-red-100 font-mono tracking-tighter">
+                        {progress}<span className="text-red-400 text-3xl">%</span>
+                    </div>
+                    <span className="text-xl text-red-200/80 font-serif italic mt-1 tracking-widest">Love & Wishes</span>
+                </div>
+            </div>
+
+            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden border border-red-500/20">
+                <motion.div
+                    className="h-full bg-gradient-to-r from-red-800 to-rose-500"
+                    animate={{ width: `${progress}%` }}
+                />
+            </div>
+        </motion.div>
+    );
+};
+
+// --- Step 6: Birthday Typewriter Message ---
+const TypewriterStep = ({ onComplete }: { onComplete: () => void }) => {
+    const textTitle = "HAPPY BIRTHDAY SAYANG";
+    const textSub = "may 22 be kind to you.\nand may the next chapter be even better. 🕸️";
+
+    const [displayedTitle, setDisplayedTitle] = useState("");
+    const [displayedSub, setDisplayedSub] = useState("");
+    const [titleDone, setTitleDone] = useState(false);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (!titleDone && displayedTitle !== textTitle) {
+            timer = setTimeout(() => {
+                setDisplayedTitle(textTitle.slice(0, displayedTitle.length + 1));
+            }, 80);
+        } else if (!titleDone && displayedTitle === textTitle) {
+            timer = setTimeout(() => setTitleDone(true), 400);
+        }
+        return () => clearTimeout(timer);
+    }, [displayedTitle, titleDone, textTitle]);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (titleDone && displayedSub !== textSub) {
+            timer = setTimeout(() => {
+                setDisplayedSub(textSub.slice(0, displayedSub.length + 1));
+            }, 50);
+        } else if (titleDone && displayedSub === textSub) {
+            timer = setTimeout(() => onComplete(), 2500);
+        }
+        return () => clearTimeout(timer);
+    }, [displayedSub, titleDone, onComplete, textSub]);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col items-center justify-center p-8 relative z-10 text-center space-y-4 max-w-xl"
+        >
+            <h1 className="text-4xl sm:text-6xl font-serif font-bold text-red-200 leading-tight tracking-wide drop-shadow-[0_0_15px_rgba(225,29,72,0.6)]">
+                {displayedTitle}
+                {!titleDone && (
+                    <motion.span
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.8 }}
+                        className="inline-block w-2 sm:w-3 h-8 sm:h-12 bg-red-500 ml-2 align-middle"
+                    />
+                )}
+            </h1>
+
+            {titleDone && (
+                <p className="text-base sm:text-xl font-serif text-rose-200/90 whitespace-pre-line leading-relaxed italic">
+                    {displayedSub}
+                    <motion.span
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.8 }}
+                        className="inline-block w-1.5 h-5 bg-red-400 ml-1 align-middle"
+                    />
+                </p>
+            )}
+        </motion.div>
+    );
+};
+
+export default function InteractionFlow({ onFlowComplete }: { onFlowComplete: () => void }) {
+    const [step, setStep] = useState(1);
+
+    return (
+        <div className="fixed inset-0 z-50 bg-[#0a040d] flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.18)_0%,transparent_75%)]" />
+
+            <AnimatePresence mode="wait">
+                {step === 1 && (
+                    <LoveModeStep key="step1" onComplete={() => setStep(2)} />
+                )}
+                {step === 2 && (
+                    <PinStep key="step2" o

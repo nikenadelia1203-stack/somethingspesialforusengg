@@ -5,19 +5,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const moments = [
   {
-    image: '/1.jpeg',
+    image: '/1.jpg',
     number: '01 / LOBBY',
     title: 'WAITING IN THE GAMEPLAY LOADING',
     text: 'Every game had to start somewhere.',
   },
   {
-    image: '/2.jpeg',
+    image: '/2.jpg',
     number: '02 / IN GAME',
     title: 'RIGHT IN THE CHAOS',
     text: 'Somehow, the chaos was more fun together.',
   },
   {
-    image: '/3.jpeg',
+    image: '/3.jpg',
     number: '03 / LOADING',
     title: 'ONE MORE GAME?',
     text: 'Probably. Just one more.',
@@ -29,6 +29,7 @@ export default function DomeGallery() {
 
   return (
     <section className="relative w-full overflow-hidden py-6">
+      {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0 opacity-30">
         <div className="absolute left-[10%] top-[10%] text-4xl animate-pulse">✦</div>
         <div className="absolute right-[8%] top-[35%] text-3xl animate-pulse">🕸️</div>
@@ -36,6 +37,7 @@ export default function DomeGallery() {
       </div>
 
       <div className="relative mx-auto w-full max-w-md px-2">
+        {/* Heading */}
         <div className="mb-8 text-center">
           <p className="mb-2 font-mono text-[10px] tracking-[0.24em] text-rose-200/60">
             08 / THREE MOMENTS
@@ -50,6 +52,7 @@ export default function DomeGallery() {
           </p>
         </div>
 
+        {/* Photo cards */}
         <div className="flex flex-col gap-8">
           {moments.map((moment, index) => (
             <motion.button
@@ -61,14 +64,20 @@ export default function DomeGallery() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileTap={{ scale: 0.98 }}
               className={`group relative w-full cursor-pointer bg-[#e9ded3] p-2 text-left text-[#352b2c] shadow-[0_20px_45px_rgba(0,0,0,.45)] transition ${
-                index === 0 ? '-rotate-[1deg]' : index === 1 ? 'rotate-[1deg]' : '-rotate-[0.5deg]'
+                index === 0
+                  ? '-rotate-[1deg]'
+                  : index === 1
+                  ? 'rotate-[1deg]'
+                  : '-rotate-[0.5deg]'
               }`}
             >
+              {/* Top label */}
               <div className="flex h-8 items-center justify-between px-2 font-mono text-[9px] tracking-[0.14em]">
                 <span>{moment.number}</span>
                 <span className="text-[#7b2c38]">✦</span>
               </div>
 
+              {/* Image */}
               <div className="relative aspect-square overflow-hidden bg-[#21191a]">
                 <img
                   src={moment.image}
@@ -81,6 +90,7 @@ export default function DomeGallery() {
                 </div>
               </div>
 
+              {/* Caption */}
               <div className="p-3 pb-4">
                 <p className="font-mono text-[10px] tracking-[0.1em] text-[#7b2c38]">
                   {moment.title}
@@ -94,6 +104,7 @@ export default function DomeGallery() {
         </div>
       </div>
 
+      {/* IMAGE MODAL */}
       <AnimatePresence>
         {activeImage !== null && (
           <motion.div

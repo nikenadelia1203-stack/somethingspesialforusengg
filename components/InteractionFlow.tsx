@@ -14,7 +14,7 @@ type Step =
   | 'story'
   | 'final';
 
-const CORRECT_PIN = '0609';
+const CORRECT_PIN = '060904';
 
 /* =========================================================
    BACKGROUND PARTICLES
@@ -59,28 +59,10 @@ function FloatingParticles() {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="
-        fixed
-        inset-0
-        overflow-hidden
-        bg-[#090a0f]
-        text-[#f6ece6]
-      "
-    >
-      <div
-        className="
-          absolute
-          inset-0
-          bg-[radial-gradient(circle_at_80%_10%,rgba(115,24,42,.38),transparent_30%),radial-gradient(circle_at_10%_80%,rgba(20,38,65,.38),transparent_42%)]
-        "
-      />
-
+    <div className="fixed inset-0 overflow-hidden bg-[#090a0f] text-[#f6ece6]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(115,24,42,.38),transparent_30%),radial-gradient(circle_at_10%_80%,rgba(20,38,65,.38),transparent_42%)]" />
       <FloatingParticles />
-
-      <div className="relative z-10 h-full">
-        {children}
-      </div>
+      <div className="relative z-10 h-full">{children}</div>
     </div>
   );
 }
@@ -115,21 +97,7 @@ function MainButton({
   return (
     <button
       onClick={onClick}
-      className="
-        mt-7
-        border
-        border-rose-200/20
-        bg-white/[0.04]
-        px-6
-        py-3
-        font-serif
-        text-sm
-        tracking-wide
-        transition
-        hover:bg-white/[0.09]
-        active:scale-95
-        cursor-pointer
-      "
+      className="mt-7 border border-rose-200/20 bg-white/[0.04] px-6 py-3 font-serif text-sm tracking-wide transition hover:bg-white/[0.09] active:scale-95 cursor-pointer"
     >
       {children}
     </button>
@@ -154,7 +122,6 @@ function LoadingScreen({ next }: { next: () => void }) {
   useEffect(() => {
     if (progress >= 100) {
       const timeout = window.setTimeout(next, 700);
-
       return () => window.clearTimeout(timeout);
     }
   }, [progress, next]);
@@ -208,24 +175,11 @@ function GiftScreen({ next }: { next: () => void }) {
 
   function openGift() {
     if (opened) return;
-
     setOpened(true);
-
     window.setTimeout(next, 1400);
   }
 
-  const burstItems = [
-    '♥',
-    '✦',
-    '🕷️',
-    '💥',
-    '🕸️',
-    '✧',
-    '♥',
-    '🕷️',
-    '✦',
-    '💥',
-  ];
+  const burstItems = ['♥', '✦', '🕷️', '💥', '🕸️', '✧', '♥', '🕷️', '✦', '💥'];
 
   return (
     <div className="flex h-full items-center justify-center p-6 text-center">
@@ -244,12 +198,7 @@ function GiftScreen({ next }: { next: () => void }) {
               burstItems.map((item, index) => (
                 <motion.span
                   key={index}
-                  initial={{
-                    x: 0,
-                    y: 0,
-                    scale: 0,
-                    opacity: 1,
-                  }}
+                  initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
                   animate={{
                     x: ((index % 5) - 2) * 58,
                     y: -80 - Math.floor(index / 5) * 75,
@@ -273,63 +222,22 @@ function GiftScreen({ next }: { next: () => void }) {
             aria-label="Open gift"
           >
             <motion.div
-              className="
-                absolute
-                left-3
-                right-3
-                top-3
-                z-20
-                h-11
-                rounded-md
-                border
-                border-rose-200/30
-                bg-[#a92f3c]
-              "
+              className="absolute left-3 right-3 top-3 z-20 h-11 rounded-md border border-rose-200/30 bg-[#a92f3c]"
               animate={
                 opened
-                  ? {
-                      y: -60,
-                      rotate: -9,
-                    }
-                  : {
-                      y: [0, -6, 0],
-                    }
+                  ? { y: -60, rotate: -9 }
+                  : { y: [0, -6, 0] }
               }
               transition={
                 opened
                   ? { duration: 0.55 }
-                  : {
-                      duration: 1.8,
-                      repeat: Infinity,
-                    }
+                  : { duration: 1.8, repeat: Infinity }
               }
             />
 
             <motion.div
-              className="
-                absolute
-                bottom-0
-                left-3
-                right-3
-                top-12
-                grid
-                place-items-center
-                rounded-lg
-                border
-                border-rose-200/20
-                bg-gradient-to-br
-                from-[#a42d3a]
-                to-[#311018]
-                text-6xl
-                shadow-2xl
-              "
-              animate={
-                opened
-                  ? {
-                      scale: [1, 1.08, 1],
-                    }
-                  : {}
-              }
+              className="absolute bottom-0 left-3 right-3 top-12 grid place-items-center rounded-lg border border-rose-200/20 bg-gradient-to-br from-[#a42d3a] to-[#311018] text-6xl shadow-2xl"
+              animate={opened ? { scale: [1, 1.08, 1] } : {}}
             >
               🎁
             </motion.div>
@@ -345,7 +253,7 @@ function GiftScreen({ next }: { next: () => void }) {
 }
 
 /* =========================================================
-   03 — PIN
+   03 — PIN (060904)
 ========================================================= */
 
 function PinScreen({ next }: { next: () => void }) {
@@ -358,18 +266,16 @@ function PinScreen({ next }: { next: () => void }) {
       return;
     }
 
-    if (pin.length >= 4) return;
+    if (pin.length >= 6) return;
 
     const nextPin = pin + value;
-
     setPin(nextPin);
 
-    if (nextPin.length === 4) {
+    if (nextPin.length === 6) {
       if (nextPin === CORRECT_PIN) {
         window.setTimeout(next, 550);
       } else {
         setWrong(true);
-
         window.setTimeout(() => {
           setPin('');
           setWrong(false);
@@ -378,20 +284,7 @@ function PinScreen({ next }: { next: () => void }) {
     }
   }
 
-  const numbers = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '',
-    '0',
-    '⌫',
-  ];
+  const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'];
 
   return (
     <div className="flex h-full items-center justify-center p-6 text-center">
@@ -410,23 +303,16 @@ function PinScreen({ next }: { next: () => void }) {
 
         <motion.div
           animate={wrong ? { x: [-10, 10, -7, 7, 0] } : {}}
-          className="my-8 flex justify-center gap-3"
+          className="my-8 flex justify-center gap-2"
         >
-          {[0, 1, 2, 3].map((index) => (
+          {[0, 1, 2, 3, 4, 5].map((index) => (
             <span
               key={index}
-              className={`
-                h-3
-                w-3
-                rounded-full
-                border
-                border-rose-300/40
-                ${
-                  index < pin.length
-                    ? 'bg-rose-400 shadow-[0_0_15px_rgba(251,113,133,.7)]'
-                    : ''
-                }
-              `}
+              className={`h-3 w-3 rounded-full border border-rose-300/40 ${
+                index < pin.length
+                  ? 'bg-rose-400 shadow-[0_0_15px_rgba(251,113,133,.7)]'
+                  : ''
+              }`}
             />
           ))}
         </motion.div>
@@ -439,18 +325,7 @@ function PinScreen({ next }: { next: () => void }) {
               <button
                 key={index}
                 onClick={() => press(number)}
-                className="
-                  h-14
-                  rounded-md
-                  border
-                  border-white/10
-                  bg-white/[0.035]
-                  text-lg
-                  transition
-                  active:scale-95
-                  active:bg-rose-500/20
-                  cursor-pointer
-                "
+                className="h-14 rounded-md border border-white/10 bg-white/[0.035] text-lg transition active:scale-95 active:bg-rose-500/20 cursor-pointer"
               >
                 {number}
               </button>
@@ -495,23 +370,12 @@ function WelcomeScreen({ next }: { next: () => void }) {
 ========================================================= */
 
 function PuzzleScreen({ next }: { next: () => void }) {
-  const [solved, setSolved] = useState<boolean[]>(
-    Array(12).fill(false)
-  );
+  const [solved, setSolved] = useState<boolean[]>(Array(12).fill(false));
 
   const pieces = [
-    '🕷️',
-    '🕸️',
-    '✦',
-    '♥',
-    '🕷️',
-    '✧',
-    '🕸️',
-    '✦',
-    '♥',
-    '🕷️',
-    '✧',
-    '🕸️',
+    '🕷️', '🕸️', '✦', '♥',
+    '🕷️', '✧', '🕸️', '✦',
+    '♥', '🕷️', '✧', '🕸️',
   ];
 
   const completed = solved.filter(Boolean).length;
@@ -539,39 +403,17 @@ function PuzzleScreen({ next }: { next: () => void }) {
           don&apos;t worry, this one is easy 😭
         </p>
 
-        <div
-          className="
-            mx-auto
-            mt-7
-            grid
-            w-[min(360px,90vw)]
-            grid-cols-4
-            gap-2
-            rounded-2xl
-            border
-            border-white/10
-            bg-black/20
-            p-2
-          "
-        >
+        <div className="mx-auto mt-7 grid w-[min(360px,90vw)] grid-cols-4 gap-2 rounded-2xl border border-white/10 bg-black/20 p-2">
           {pieces.map((piece, index) => (
             <motion.button
               key={index}
               onClick={() => solve(index)}
               whileTap={{ scale: 0.9 }}
-              className={`
-                aspect-square
-                rounded-xl
-                border
-                text-xl
-                transition
-                cursor-pointer
-                ${
-                  solved[index]
-                    ? 'border-rose-300/40 bg-rose-700/30'
-                    : 'border-white/10 bg-white/[0.035]'
-                }
-              `}
+              className={`aspect-square rounded-xl border text-xl transition cursor-pointer ${
+                solved[index]
+                  ? 'border-rose-300/40 bg-rose-700/30'
+                  : 'border-white/10 bg-white/[0.035]'
+              }`}
             >
               {solved[index] ? piece : '?'}
             </motion.button>
@@ -647,10 +489,8 @@ function PlaylistScreen({ next }: { next: () => void }) {
 
   function formatTime(seconds: number) {
     if (!Number.isFinite(seconds)) return '0:00';
-
     const minutes = Math.floor(seconds / 60);
     const remaining = Math.floor(seconds % 60);
-
     return `${minutes}:${String(remaining).padStart(2, '0')}`;
   }
 
@@ -674,32 +514,17 @@ function PlaylistScreen({ next }: { next: () => void }) {
             <button
               key={track.title}
               onClick={() => setTrackIndex(index)}
-              className={`
-                grid
-                w-full
-                grid-cols-[35px_1fr]
-                rounded-sm
-                border
-                p-4
-                text-left
-                transition
-                cursor-pointer
-                ${
-                  trackIndex === index
-                    ? 'border-rose-300/40 bg-rose-900/20'
-                    : 'border-white/10 bg-white/[0.025]'
-                }
-              `}
+              className={`grid w-full grid-cols-[35px_1fr] rounded-sm border p-4 text-left transition cursor-pointer ${
+                trackIndex === index
+                  ? 'border-rose-300/40 bg-rose-900/20'
+                  : 'border-white/10 bg-white/[0.025]'
+              }`}
             >
               <span className="font-mono text-xs text-rose-300">
                 {String(index + 1).padStart(2, '0')}
               </span>
-
               <span>
-                <b className="block text-sm leading-snug">
-                  {track.title}
-                </b>
-
+                <b className="block text-sm leading-snug">{track.title}</b>
                 <small className="mt-1 block text-rose-100/45">
                   {track.artist}
                 </small>
@@ -718,50 +543,21 @@ function PlaylistScreen({ next }: { next: () => void }) {
           onEnded={() => setPlaying(false)}
         />
 
-        <div
-          className="
-            mt-5
-            grid
-            grid-cols-[52px_1fr]
-            gap-4
-            border
-            border-white/10
-            bg-white/[0.035]
-            p-4
-            text-left
-          "
-        >
+        <div className="mt-5 grid grid-cols-[52px_1fr] gap-4 border border-white/10 bg-white/[0.035] p-4 text-left">
           <button
             onClick={togglePlay}
-            className="
-              row-span-2
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-rose-200/20
-              bg-rose-700/70
-              text-sm
-              cursor-pointer
-            "
+            className="row-span-2 flex h-12 w-12 items-center justify-center rounded-full border border-rose-200/20 bg-rose-700/70 text-sm cursor-pointer"
           >
             {playing ? '❚❚' : '▶'}
           </button>
 
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <b className="block truncate text-sm">
-                {activeTrack.title}
-              </b>
-
+              <b className="block truncate text-sm">{activeTrack.title}</b>
               <span className="block text-xs text-rose-100/45">
                 {activeTrack.artist}
               </span>
             </div>
-
             <span className="font-mono text-[10px] text-rose-100/45">
               {formatTime(currentTime)}
             </span>
@@ -778,7 +574,6 @@ function PlaylistScreen({ next }: { next: () => void }) {
             }
             onChange={(event) => {
               if (!audioRef.current?.duration) return;
-
               audioRef.current.currentTime =
                 (Number(event.target.value) / 100) *
                 audioRef.current.duration;
@@ -798,19 +593,102 @@ function PlaylistScreen({ next }: { next: () => void }) {
 }
 
 /* =========================================================
-   07 — STORY SCREEN (BAGIAN REVISI)
+   07 — STORY SCREEN (MOMENTS & BOUQUET)
 ========================================================= */
 
 function StoryScreen({ next }: { next: () => void }) {
+  const [bouquetClicked, setBouquetClicked] = useState(0);
+  const [bouquetMsg, setBouquetMsg] = useState(
+    'tap the bouquet for a little surprise.'
+  );
+
+  const bouquetMessages = [
+    'one more random game together.',
+    'more laughs, less overthinking.',
+    'make memories worth keeping.',
+    'go somewhere you have never been.',
+    'another good day waiting somewhere.',
+  ];
+
+  function handleBouquetClick() {
+    setBouquetClicked((v) => v + 1);
+    setBouquetMsg(
+      bouquetMessages[Math.floor(Math.random() * bouquetMessages.length)]
+    );
+  }
+
   return (
-    <div className="h-full overflow-y-auto overscroll-contain px-4 pb-16 pt-10">
+    <div className="h-full overflow-y-auto overscroll-contain px-4 pb-16 pt-6">
       <div className="mx-auto max-w-xl">
-        <div className="py-7 text-center font-mono text-[10px] tracking-[0.24em] text-rose-100/30">
-          ✦ A FEW MOMENTS WORTH KEEPING
+        {/* Bouquet Section */}
+        <div className="py-8 text-center">
+          <SectionLabel>06 / THINGS TO DO</SectionLabel>
+          <BigTitle>
+            A tiny
+            <br />
+            <em className="font-normal">bouquet for you.</em>
+          </BigTitle>
+
+          <div className="relative mx-auto mt-6 max-w-xs cursor-pointer" onClick={handleBouquetClick}>
+            <motion.img
+              src="/bouquet.jpeg"
+              alt="Bouquet"
+              whileTap={{ scale: 0.95 }}
+              className="mx-auto h-56 rounded-2xl border border-rose-300/30 object-cover shadow-xl"
+            />
+          </div>
+
+          <p className="mt-4 font-serif text-sm italic text-rose-200/80">
+            &ldquo;{bouquetMsg}&rdquo;
+          </p>
+          {bouquetClicked > 0 && (
+            <p className="mt-1 font-mono text-[10px] text-rose-300/50">
+              tapped {bouquetClicked} times ✦
+            </p>
+          )}
         </div>
 
+        <div className="my-6 h-px w-full bg-white/10" />
+
+        {/* Dome Gallery 3 Moments Section */}
         <DomeGallery />
 
         <div className="flex justify-center pt-8">
           <MainButton onClick={next}>
-            one last thing &
+            one last thing &apos;n →
+          </MainButton>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   08 — FINAL SCREEN
+========================================================= */
+
+function FinalScreen() {
+  return (
+    <div className="flex h-full items-center justify-center p-6 text-center">
+      <div>
+        <SectionLabel>HAPPY BIRTHDAY SENG</SectionLabel>
+
+        <BigTitle>
+          May this year be
+          <br />
+          <em className="font-normal">kind to you.</em>
+        </BigTitle>
+
+        <p className="mt-6 max-w-sm text-sm leading-relaxed text-rose-100/60">
+          and may the next chapter be even better. 🕸️❤️
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   INTERACTION FLOW MAIN EXPORT
+========================================================= */
+
+export default fun

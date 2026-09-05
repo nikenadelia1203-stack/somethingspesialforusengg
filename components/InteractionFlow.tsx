@@ -458,4 +458,24 @@ export default function InteractionFlow({ onFlowComplete }: { onFlowComplete: ()
                     <LoveModeStep key="step1" onComplete={() => setStep(2)} />
                 )}
                 {step === 2 && (
-                    <PinStep key="step2" o
+                    <PinStep key="step2" onComplete={() => setStep(3)} />
+                )}
+                {step === 3 && (
+                    <GiftStep key="step3" onComplete={() => setStep(4)} />
+                )}
+                {step === 4 && (
+                    <TicTacToeStep key="step4" onComplete={() => setStep(5)} />
+                )}
+                {step === 5 && (
+                    <LoveMeterStep key="step5" onComplete={() => setStep(6)} />
+                )}
+                {step === 6 && (
+                    <TypewriterStep key="step6" onComplete={() => onFlowComplete()} />
+                )}
+            </AnimatePresence>
+
+            <div className="absolute -top-24 -left-24 w-96 h-96 bg-red-950/30 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-rose-950/30 blur-[120px] rounded-full pointer-events-none" />
+        </div>
+    );
+}

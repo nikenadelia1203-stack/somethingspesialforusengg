@@ -631,7 +631,7 @@ function StoryScreen({ next }: { next: () => void }) {
 
           <div className="relative mx-auto mt-6 max-w-xs cursor-pointer" onClick={handleBouquetClick}>
             <motion.img
-              src="/bouquet.jpeg"
+              src="/bouquet.jpg"
               alt="Bouquet"
               whileTap={{ scale: 0.95 }}
               className="mx-auto h-56 rounded-2xl border border-rose-300/30 object-cover shadow-xl"
@@ -691,4 +691,4 @@ function FinalScreen() {
    INTERACTION FLOW MAIN EXPORT
 ========================================================= */
 
-export default fun
+export default func
